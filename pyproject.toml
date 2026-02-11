@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oracle-sentinel"
+version = "2.0.0"
+description = "Python SDK for Oracle Sentinel API - AI-powered prediction market intelligence with x402 payments"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Oracle Sentinel Team"}
+]
+keywords = [
+    "oracle-sentinel",
+    "prediction-market",
+    "polymarket",
+    "ai",
+    "trading",
+    "x402",
+    "solana",
+    "crypto"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+solana = [
+    "solders>=0.18.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+]
+
+[project.urls]
+Homepage = "https://oraclesentinel.xyz"
+Repository = "https://github.com/oraclesentinel/oracle-sentinel"
+
+[tool.setuptools.packages.find]
+include = ["oracle_sentinel*"]
