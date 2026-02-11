@@ -127,7 +127,7 @@ except OracleSentinelError as e:
 
 - **Website**: https://oraclesentinel.xyz
 - **API Docs**: https://oraclesentinel.xyz/api/v1/info
-- **Twitter**: [@OracleSentinel](https://twitter.com/OracleSentinel)
+- **Twitter**: [@oracle_sentinel](https://twitter.com/oracle_sentinel)
 
 ## License
 
