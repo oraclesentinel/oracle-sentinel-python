@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "oracle-sentinel"
-version = "2.0.0"
+version = "2.1.0"
 description = "Python SDK for Oracle Sentinel API - AI-powered prediction market intelligence with x402 payments"
 readme = "README.md"
 license = {text = "MIT"}

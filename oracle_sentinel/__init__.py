@@ -23,7 +23,7 @@ from .exceptions import (
     TransactionError
 )
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 __author__ = "Oracle Sentinel Team"
 
 __all__ = [
