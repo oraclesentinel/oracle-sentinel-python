@@ -4,61 +4,68 @@ Python SDK for Oracle Sentinel API - AI-powered prediction market intelligence.
 
 ## Features
 
-- 🔐 **Token Gating**: Free unlimited access for $OSAI holders (1000+ tokens)
+- 🔐 **Signature Verification**: Secure wallet ownership proof for free access
 - 💳 **x402 Payments**: Automatic micropayments via Solana/USDC
 - 🤖 **AI Signals**: Access trading signals, analysis, and whale activity
 - ⚡ **Simple API**: Easy-to-use Python interface
 
 ## Installation
 ```bash
-pip install oracle-sentinel-sdk  # v2.0 with x402 support
+pip install oracle-sentinel
 ```
 
-For x402 payment support (auto-pay):
+With Solana payment support:
 ```bash
-pip install oracle-sentinel-sdk  # v2.0 with x402 support[solana]
+pip install oracle-sentinel[solana]
 ```
 
 ## Quick Start
 
-### Option 1: Free Access ($OSAI Holders)
+### Free Access ($OSAI Holders)
 
-If you hold 1000+ $OSAI tokens, you get FREE unlimited access:
+If you hold 1000+ $OSAI tokens, you get FREE unlimited access.
+
+**v2.1.0+**: You must provide your private key to prove wallet ownership:
 ```python
 from oracle_sentinel import OracleSentinelClient
 
-# Just provide your wallet address
-client = OracleSentinelClient(wallet_address="YOUR_WALLET_ADDRESS")
+# Export private key from Phantom/Solflare
+client = OracleSentinelClient(private_key="YOUR_PRIVATE_KEY")
 
-# Get signals - FREE!
+# FREE if you hold 1000+ $OSAI, otherwise auto-pay via x402
 signals = client.get_bulk_signals()
 print(f"Found {signals['count']} signals")
 
 for signal in signals['signals']:
-    print(f"  {signal['signal']}: {signal['question'][:50]}... (edge: {signal['edge']}%)")
+    print(f"  {signal['signal']}: {signal['question'][:50]}...")
 ```
 
-### Option 2: Pay-per-Request (x402)
+### Pay-per-Request (x402)
 
-No $OSAI? Pay with USDC per request:
+No $OSAI? Same code - it auto-pays with USDC:
 ```python
 from oracle_sentinel import OracleSentinelClient
 
-# Provide your Solana private key for auto-payment
-client = OracleSentinelClient(
-    private_key="YOUR_SOLANA_PRIVATE_KEY",
-    rpc_url="https://api.mainnet-beta.solana.com"  # or your preferred RPC
-)
+# Provide your Solana private key
+client = OracleSentinelClient(private_key="YOUR_PRIVATE_KEY")
 
-# Get signals - automatically pays $0.08 USDC
-signals = client.get_bulk_signals()
-
-# Get single signal - pays $0.01 USDC
-signal = client.get_signal("bitcoin-above-100k")
-
-# Get full analysis - pays $0.03 USDC
-analysis = client.get_analysis("bitcoin-above-100k")
+# Automatically pays if not $OSAI holder
+signals = client.get_bulk_signals()     # $0.08 USDC
+signal = client.get_signal("slug")      # $0.01 USDC
+analysis = client.get_analysis("slug")  # $0.03 USDC
 ```
+
+## 🔐 Security (v2.1.0)
+
+The SDK uses signature verification to prove wallet ownership:
+
+1. SDK requests challenge from server
+2. SDK signs challenge with your private key
+3. Server verifies signature matches wallet
+4. If valid + holds 1000+ $OSAI → FREE access
+5. If invalid or no $OSAI → Pay via x402
+
+**Your private key never leaves your machine** - only the signature is sent.
 
 ## API Reference
 
@@ -73,16 +80,15 @@ analysis = client.get_analysis("bitcoin-above-100k")
 | `analyze_market(url)` | `/api/v1/analyze` | $0.05 | Analyze any Polymarket URL |
 | `get_info()` | `/api/v1/info` | FREE | API information |
 
-*All endpoints are FREE for $OSAI holders (1000+ tokens)*
+*All endpoints are FREE for verified $OSAI holders (1000+ tokens)*
 
 ### Client Options
 ```python
 client = OracleSentinelClient(
-    wallet_address="...",      # For token gating (free access)
-    private_key="...",         # For x402 payment (auto-pay)
+    private_key="...",         # Required for free access & payments
     rpc_url="...",             # Solana RPC URL (default: mainnet)
     base_url="...",            # API URL (default: https://oraclesentinel.xyz)
-    auto_pay=True              # Enable automatic payment (default: True)
+    auto_pay=True              # Auto-pay if not holder (default: True)
 )
 ```
 
@@ -109,9 +115,9 @@ from oracle_sentinel import (
 try:
     signals = client.get_bulk_signals()
 except PaymentRequiredError as e:
-    print(f"Payment required: {e.amount} USDC atomic units")
+    print(f"Payment required: ${e.amount_dollars}")
 except InsufficientBalanceError as e:
-    print(f"Need {e.required}, have {e.available}")
+    print(f"Need ${e.required_dollars}, have ${e.available_dollars}")
 except OracleSentinelError as e:
     print(f"API error: {e}")
 ```
@@ -125,6 +131,7 @@ except OracleSentinelError as e:
 
 ## Links
 
+- **PyPI**: https://pypi.org/project/oracle-sentinel/
 - **Website**: https://oraclesentinel.xyz
 - **API Docs**: https://oraclesentinel.xyz/api/v1/info
 - **Twitter**: [@oracle_sentinel](https://twitter.com/oracle_sentinel)
