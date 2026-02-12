@@ -18,15 +18,20 @@ from .exceptions import (
     OracleSentinelError,
     PaymentRequiredError,
     InsufficientBalanceError,
-    AuthenticationError
+    AuthenticationError,
+    NetworkError,
+    TransactionError
 )
 
 __version__ = "2.0.0"
 __author__ = "Oracle Sentinel Team"
+
 __all__ = [
     "OracleSentinelClient",
     "OracleSentinelError",
     "PaymentRequiredError",
     "InsufficientBalanceError",
-    "AuthenticationError"
+    "AuthenticationError",
+    "NetworkError",
+    "TransactionError"
 ]
